@@ -1,0 +1,25 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  attributes:
+    actions:
+    - key: deployment.environment.name
+      value: local
+      action: upsert
+
+exporters:
+  otlphttp:
+    endpoint: http://otelcol-remote:4318
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [attributes]
+      exporters: [otlphttp]
