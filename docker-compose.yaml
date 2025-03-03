@@ -19,6 +19,9 @@ services:
     image: otel/opentelemetry-collector-contrib:0.120.0
     volumes:
     - ./otelcol-config.local.yaml:/etc/otelcol-contrib/config.yaml
+    - ./ca.crt:/etc/otelcol-contrib/ca.crt
+    - ./client.key:/etc/otelcol-contrib/client.key
+    - ./client.crt:/etc/otelcol-contrib/client.crt
     ports:
     - "4318:4318"
 
@@ -26,3 +29,6 @@ services:
     image: otel/opentelemetry-collector-contrib:0.120.0
     volumes:
     - ./otelcol-config.remote.yaml:/etc/otelcol-contrib/config.yaml
+    - ./ca.crt:/etc/otelcol-contrib/ca.crt
+    - ./server.crt:/etc/otelcol-contrib/server.crt
+    - ./server.key:/etc/otelcol-contrib/server.key
