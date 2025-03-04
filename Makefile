@@ -46,3 +46,7 @@ server:
 		-addext "subjectAltName=critical, DNS:otelcol-remote" \
 		-days 36500 \
 		-out server.crt
+
+.PHONY: generate-and-send-metrics
+generate-and-send-metrics:
+	telemetrygen metrics --metric-type Sum --otlp-http --otlp-insecure --telemetry-attributes timestamp=\"$(shell date -Iseconds)\"

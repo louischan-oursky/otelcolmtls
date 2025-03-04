@@ -35,9 +35,9 @@ func mustInt64Counter(name string, options ...metric.Int64CounterOption) metric.
 	return counter
 }
 
-var CounterOAuthSessionCreationCount = mustInt64Counter(
+var Counter = mustInt64Counter(
 	"test",
-	metric.WithDescription("The number of creation of OAuth session"),
+	metric.WithDescription("example counter"),
 	metric.WithUnit("{test}"),
 )
 
@@ -239,7 +239,24 @@ func main() {
 	defer shutdown(ctx)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		CounterOAuthSessionCreationCount.Add(r.Context(), 1)
+		Counter.Add(r.Context(), 1)
+		w.Header().Set("Content-Type", "text/html")
+		w.Write([]byte(`
+<!DOCTYPE html>
+<html>
+<head>
+<title>otel</title>
+</head>
+<body>
+	<p>
+	Visit <a href="http://localhost:9090/graph?g0.expr=test_total" target="_blank">http://localhost:9090</a> and you should should see a test_total metric.
+	</p>
+	<p>
+	FYI: Each request will increment test_total by 1.
+	</p>
+</body>
+</html>
+		`))
 	})
 
 	http.ListenAndServe(":3000", nil)
