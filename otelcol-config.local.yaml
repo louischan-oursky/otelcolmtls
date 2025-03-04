@@ -12,8 +12,8 @@ processors:
       action: upsert
 
 exporters:
-  otlphttp:
-    endpoint: https://otelcol-remote:4318
+  otlp:
+    endpoint: https://otelcol-remote:4317
     tls:
       # Need to specify ca_file too,
       # otherwise, the client certificate will be considered as invalid.
@@ -30,4 +30,4 @@ service:
     metrics:
       receivers: [otlp]
       processors: [attributes]
-      exporters: [otlphttp]
+      exporters: [otlp]
